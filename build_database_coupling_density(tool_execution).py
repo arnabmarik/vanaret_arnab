@@ -16,7 +16,7 @@ from ssbj_vanaret_mdf import mdf_run
 from vanaret import ScaledDependencyMatrix, LargeRandomMatrix
 
 
-for d_large in [.3, .8]:
+for d_large in [.3]:
     nx_large = 100
     ny_large = 2
     pickle.dump([nx_large, ny_large, d_large], open("large_matrix_params.p", "wb"))
@@ -31,19 +31,16 @@ for d_large in [.3, .8]:
 
     # make an empty pandas dataframe to form database
     if not os.path.isfile('df_mdf.p'):
-        pickle.dump(pd.DataFrame(columns=['nx', 'ny', 'd', 'total iterations[MDF]', 'total time[MDF]',
-                                          'final_objective[MDF]']),
+        pickle.dump(pd.DataFrame(columns=[]),
                     open("df_mdf.p", "wb"))
     if not os.path.isfile('df_idf.p'):
-        pickle.dump(pd.DataFrame(columns=['total iterations[IDF]', 'total time[IDF]',
-                                          'final_objective[IDF]']),
+        pickle.dump(pd.DataFrame(columns=[]),
                     open("df_idf.p", "wb"))
     if not os.path.isfile('df_idf_tol.p'):
-        pickle.dump(pd.DataFrame(columns=['total iterations[IDF_tol]', 'total time[IDF_tol]',
-                                          'final_objective[IDF_tol]']),
+        pickle.dump(pd.DataFrame(columns=[]),
                     open("df_idf_tol.p", "wb"))
-    for nx in [4, 10, 15, 20, 25]:
-        for ny in [3, 5, 10]:
+    for nx in [4]:
+        for ny in [4]:
             for _ in range(5):
                 # nx = 5  # dimension of discipline inputs
                 # ny = j  # dimension of coupling
@@ -59,12 +56,13 @@ for d_large in [.3, .8]:
                 [alpha_g1.append(np.random.random_sample()) for _ in range(nx)]
                 [alpha_g2.append(np.random.random_sample()) for _ in range(nx)]
                 [alpha_g3.append(np.random.random_sample()) for _ in range(nx)]
-                mu_g1, mu_g2, mu_g3 = [], [], []  # random number in (0,1 ) with uniform probability to activate constraint
+                mu_g1, mu_g2, mu_g3 = [], [], []  # random number in (0,1 ) with uniform probability to activ. comstr.
                 [mu_g1.append(np.random.random_sample()) for _ in range(nx)]
                 [mu_g2.append(np.random.random_sample()) for _ in range(nx)]
                 [mu_g3.append(np.random.random_sample()) for _ in range(nx)]
                 constraint_parameters = ([p_g1, p_g2, p_g3], [alpha_g1, alpha_g1, alpha_g1], [mu_g1, mu_g2, mu_g3])
                 pickle.dump(constraint_parameters, open("constraint_params.p", "wb"))  # pickle the input values
+
 
                 # initialize the class which build the dependency matrix
                 print("generating valid dependency matrix")
@@ -110,9 +108,9 @@ for d_large in [.3, .8]:
                 # supply the MDAO definitions
                 mdao_definitions = ['MDF', 'IDF']
 
-                # Optimization problem
                 if 'IDF' in mdao_definitions:
                     idf_run2(nx, ny)
+
                 if 'MDF' in mdao_definitions:
                     mdf_run(nx, ny, d_large)
 
@@ -120,6 +118,11 @@ for d_large in [.3, .8]:
                 df_idf = pickle.load(open("df_idf.p", "rb"))
                 df_idf_tol = pickle.load(open("df_idf_tol.p", "rb"))
 
+                if not os.path.exists('./execution time(tools)/result(nx = ' + str(nx) + ')'):
+                    os.makedirs('./execution time(tools)/result(nx = ' + str(nx) + ')')
+
                 result = pd.concat([df_mdf, df_idf_tol], axis=1)
-                result.to_csv('extreme ends/result(nx = 5)/result_new_values' + '(' + str(d_large) + ').csv')
+                result.to_csv('execution time(tools)/result(nx = ' + str(nx) + ')/result_new_values' + '('
+                              + str(d_large) + ').csv')
                 # result.to_csv('result_makeup_values.csv')
+                # os.remove("str_count.p")

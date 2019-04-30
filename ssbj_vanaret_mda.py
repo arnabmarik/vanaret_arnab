@@ -1,13 +1,13 @@
 
 # Imports
-from openmdao.api import Group
+from openmdao.api import Group, ParallelGroup
 import numpy as np
 from openmdao.api import IndepVarComp, ExecComp
 from ssbj_vanaret_discipline import StructureDisc
 from ssbj_vanaret_discipline import AerodynamicsDisc
 from ssbj_vanaret_discipline import PropulsionDisc
 from ssbj_vanaret_discipline import PerformanceDisc
-from openmdao.api import NonlinearBlockGS, ScipyKrylov
+from openmdao.api import NonlinearBlockGS, ScipyKrylov, NonlinearBlockJac
 
 
 class SsbjMda(Group):
@@ -27,7 +27,7 @@ class SsbjMda(Group):
         self.add_subsystem('x3_ini', IndepVarComp('x3', .5 * np.ones(self.nx)), promotes=['*'])
 
         # Disciplines
-        sap_group = Group()
+        parallel = model.add_subsystem('parallel', ParallelGroup())
         sap_group.add_subsystem('Structure', StructureDisc(), promotes=['*'])
         sap_group.add_subsystem('Aerodynamics', AerodynamicsDisc(), promotes=['*'])
         sap_group.add_subsystem('Propulsion', PropulsionDisc(), promotes=['*'])
