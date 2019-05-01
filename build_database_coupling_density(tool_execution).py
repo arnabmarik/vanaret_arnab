@@ -125,4 +125,4 @@ for d_large in [.3]:
                 result.to_csv('execution time(tools)/result(nx = ' + str(nx) + ')/result_new_values' + '('
                               + str(d_large) + ').csv')
                 # result.to_csv('result_makeup_values.csv')
-                os.remove("str_count.p")
+                # os.remove("str_count.p")
