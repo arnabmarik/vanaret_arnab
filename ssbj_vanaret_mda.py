@@ -27,7 +27,7 @@ class SsbjMda(Group):
         self.add_subsystem('x3_ini', IndepVarComp('x3', .5 * np.ones(self.nx)), promotes=['*'])
 
         # Disciplines
-        parallel = model.add_subsystem('parallel', ParallelGroup())
+        sap_group = Group()
         sap_group.add_subsystem('Structure', StructureDisc(), promotes=['*'])
         sap_group.add_subsystem('Aerodynamics', AerodynamicsDisc(), promotes=['*'])
         sap_group.add_subsystem('Propulsion', PropulsionDisc(), promotes=['*'])

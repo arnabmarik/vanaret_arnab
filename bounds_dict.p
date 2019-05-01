@@ -2,7 +2,7 @@
 S'y1_max'
 p1
 (lp2
-cnumpy.core._multiarray_umath
+cnumpy.core.multiarray
 scalar
 p3
 (cnumpy

@@ -1,4 +1,4 @@
-cnumpy.core._multiarray_umath
+cnumpy.core.multiarray
 scalar
 p0
 (cnumpy
@@ -17,7 +17,7 @@ NNNI-1
 I-1
 I0
 tp6
-bS'\x00\x00\x00\x00\x00\xa8\x91@'
+bS'\x00\x00\x00\x00\x000w@'
 p7
 tp8
 Rp9
