@@ -74,7 +74,7 @@ plt.tight_layout()
 for d in range(3, 8):
     fig3 = plt.figure(5)
     fig3.suptitle('nx = 5', fontsize=16)
-    result = pd.read_csv("result(nx = 5)/result_new_values(0." + str(d) + ").csv")
+    result = pd.read_csv("result/result_new_values(0." + str(d) + ").csv")
     ax = fig3.add_subplot(3, 2, d - 2)
     a_mdf = []
     a_idf = []

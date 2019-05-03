@@ -46,4 +46,4 @@ print(df_idf_tol)
 # result.to_csv('result_coupling_density2.csv')
 
 result = pd.concat([df_mdf, df_idf_tol], axis=1)
-result.to_csv('results(averaging out runs)/result(nx = 20)/result_new_values(0.5).csv')
+result.to_csv('results(averaging out runs)/result(nx = 20)/results.csv')
