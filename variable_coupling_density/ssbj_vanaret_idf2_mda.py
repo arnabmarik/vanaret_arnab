@@ -1,13 +1,13 @@
 from openmdao.api import Group
 import numpy as np
-from openmdao.api import IndepVarComp, ExecComp
+from openmdao.api import IndepVarComp, ExecComp, ParallelGroup
 from ssbj_vanaret_discipline import StructureDisc
 from ssbj_vanaret_discipline import AerodynamicsDisc
 from ssbj_vanaret_discipline import PropulsionDisc
 from ssbj_vanaret_discipline import PerformanceDisc
 
 
-class SsbjIdf2Mda(Group):
+class SsbjIdf2Mda(ParallelGroup):
 
     """
     Analysis for IDF formulation where couplings are managed as additional constraints

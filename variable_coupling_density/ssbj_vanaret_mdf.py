@@ -6,7 +6,7 @@ import numpy as np
 from numpy.linalg import norm
 import pandas as pd
 import matplotlib.pylab as plt
-from openmdao.api import Problem, ScipyOptimizeDriver, SqliteRecorder, CaseReader
+from openmdao.api import Problem, ScipyOptimizeDriver, SqliteRecorder, CaseReader, ParallelGroup, PETScVector
 from ssbj_vanaret_mda import SsbjMda
 import time
 
@@ -44,7 +44,7 @@ def mdf_run(nx, ny, d):
     prob.driver.options['tol'] = 1e-3
 
     start_time = time.time()
-    prob.setup(mode='fwd')
+    prob.setup(vector_class=PETScVector, check=False, mode='fwd')
     prob.set_solver_print(1)
     prob.run_driver()
     end_time = time.time()

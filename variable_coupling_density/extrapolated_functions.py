@@ -21,17 +21,23 @@ class Structure:
     def __init__(self):
 
         self.str_int = StructureInterpolation()  # This class gives component wise interpolation for structural outputs
-        self.dependency_matrix = pickle.load(open("dependency_matrix.p", "rb"))
-        self.component_dependency = pickle.load(open("component_dependency.p", "rb"))
+        with open("dependency_matrix.p", "rb") as f:
+            self.dependency_matrix = pickle.load(f)
+        with open("component_dependency.p", "rb") as f:
+            self.component_dependency = pickle.load(f)
 
         # load parameters related to translating the scaled constraints
-        [self.p_g1, self.p_g2, self.p_g3] = pickle.load(open("constraint_params.p", "rb"))[0]
-        [self.alpha_g1, self.alpha_g2, self.alpha_g3] = pickle.load(open("constraint_params.p", "rb"))[1]
-        [self.mu_g1, self.mu_g2, self.mu_g3] = pickle.load(open("constraint_params.p", "rb"))[2]
+        with open("constraint_params.p", "rb") as f:
+            a = pickle.load(f)
+            [self.p_g1, self.p_g2, self.p_g3] = a[0]
+            [self.alpha_g1, self.alpha_g2, self.alpha_g3] = a[1]
+            [self.mu_g1, self.mu_g2, self.mu_g3] = a[2]
         self.p = self.p_g1  # percentage of constraints allowed to be active initially
-        str_count = pickle.load(open("str_count.p", "rb"))
-        str_count += 1
-        pickle.dump(str_count, open("str_count.p", "wb"))
+        with open("str_count.p", "rb") as f:
+            str_count = pickle.load(f)
+            str_count += 1
+        with open("str_count.p", "wb") as f:
+            pickle.dump(str_count, f)
 
     def y1(self, nx, ny, x_des):
         """This output corresponds to total weight(WT) and partial fuel weight(wfw)"""
@@ -124,19 +130,24 @@ class Structure:
 class Aerodynamics:
 
     def __init__(self):
-        # This class generates  the dependency matrix and component dependency mapping.
-        self.aer_int = AerodynamicsInterpolation()  # This class gives component wise interpolation for aero outputs
-        self.dependency_matrix = pickle.load(open("dependency_matrix.p", "rb"))
-        self.component_dependency = pickle.load(open("component_dependency.p", "rb"))
+        self.aer_int = AerodynamicsInterpolation()  # This class gives component wise interpolation for structural outputs
+        with open("dependency_matrix.p", "rb") as f:
+            self.dependency_matrix = pickle.load(f)
+        with open("component_dependency.p", "rb") as f:
+            self.component_dependency = pickle.load(f)
 
         # load parameters related to translating the scaled constraints
-        [self.p_g1, self.p_g2, self.p_g3] = pickle.load(open("constraint_params.p", "rb"))[0]
-        [self.alpha_g1, self.alpha_g2, self.alpha_g3] = pickle.load(open("constraint_params.p", "rb"))[1]
-        [self.mu_g1, self.mu_g2, self.mu_g3] = pickle.load(open("constraint_params.p", "rb"))[2]
-        self.p = self.p_g2
-        aer_count = pickle.load(open("aer_count.p", "rb"))
-        aer_count += 1
-        pickle.dump(aer_count, open("aer_count.p", "wb"))
+        with open("constraint_params.p", "rb") as f:
+            a = pickle.load(f)
+            [self.p_g1, self.p_g2, self.p_g3] = a[0]
+            [self.alpha_g1, self.alpha_g2, self.alpha_g3] = a[1]
+            [self.mu_g1, self.mu_g2, self.mu_g3] = a[2]
+        self.p = self.p_g2  # percentage of constraints allowed to be active initially
+        with open("aer_count.p", "rb") as f:
+            aer_count = pickle.load(f)
+            aer_count += 1
+        with open("aer_count.p", "wb") as f:
+            pickle.dump(aer_count, f)
 
     def y2(self, nx, ny, x_des):
         """This output corresponds to lift, drag and lift-to-drag constraints"""
@@ -231,17 +242,23 @@ class Propulsion:
     def __init__(self):
         # This class generates  the dependency matrix and componenent dependency mapping.
         self.pro_int = PropulsionInterpolation()  # This class gives component wise interpolation for structural outputs
-        self.dependency_matrix = pickle.load(open("dependency_matrix.p", "rb"))
-        self.component_dependency = pickle.load(open("component_dependency.p", "rb"))
+        with open("dependency_matrix.p", "rb") as f:
+            self.dependency_matrix = pickle.load(f)
+        with open("component_dependency.p", "rb") as f:
+            self.component_dependency = pickle.load(f)
 
         # load parameters related to translating the scaled constraints
-        [self.p_g1, self.p_g2, self.p_g3] = pickle.load(open("constraint_params.p", "rb"))[0]
-        [self.alpha_g1, self.alpha_g2, self.alpha_g3] = pickle.load(open("constraint_params.p", "rb"))[1]
-        [self.mu_g1, self.mu_g2, self.mu_g3] = pickle.load(open("constraint_params.p", "rb"))[2]
-        self.p = self.p_g3
-        pro_count = pickle.load(open("pro_count.p", "rb"))
-        pro_count += 1
-        pickle.dump(pro_count, open("pro_count.p", "wb"))
+        with open("constraint_params.p", "rb") as f:
+            a = pickle.load(f)
+            [self.p_g1, self.p_g2, self.p_g3] = a[0]
+            [self.alpha_g1, self.alpha_g2, self.alpha_g3] = a[1]
+            [self.mu_g1, self.mu_g2, self.mu_g3] = a[2]
+        self.p = self.p_g3  # percentage of constraints allowed to be active initially
+        with open("pro_count.p", "rb") as f:
+            pro_count = pickle.load(f)
+            pro_count += 1
+        with open("pro_count.p", "wb") as f:
+            pickle.dump(pro_count, f)
 
     def y3(self, nx, ny, x_des):
         """This output corresponds to temperature and engine scale factor"""
@@ -334,14 +351,11 @@ class Performance:
 
     def __init__(self):
         # This class generates  the dependency matrix and component dependency mapping.
-        self.per_int = PerformanceInterpolation()  # This class gives component wise interpolation for structural output
-        self.dependency_matrix = pickle.load(open("dependency_matrix.p", "rb"))
-        self.component_dependency = pickle.load(open("component_dependency.p", "rb"))
-
-        # load parameters related to translating the scaled constraints
-        [self.p_g1, self.p_g2, self.p_g3] = pickle.load(open("constraint_params.p", "rb"))[0]
-        [self.alpha_g1, self.alpha_g2, self.alpha_g3] = pickle.load(open("constraint_params.p", "rb"))[1]
-        [self.mu_g1, self.mu_g2, self.mu_g3] = pickle.load(open("constraint_params.p", "rb"))[2]
+        self.per_int = PerformanceInterpolation()  # This class gives component wise interpolation for structural outputs
+        with open("dependency_matrix.p", "rb") as f:
+            self.dependency_matrix = pickle.load(f)
+        with open("component_dependency.p", "rb") as f:
+            self.component_dependency = pickle.load(f)
 
     def range14(self, nx, ny, x_des):
         """This output corresponds to total weight(WT) and fuel weight(WF)"""

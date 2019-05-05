@@ -20,7 +20,12 @@ class LargeRandomMatrix:
     def __init__(self, nx_large, ny_large, d_large):
         self.nx_str = self.nx_str_bias = self.nx_aero = self.nx_prop = self.nx_shared = nx_large
         self.ny_str = self.ny_str_bias = self.ny_aero = self.ny_prop = self.ny_shared = ny_large
-        self.d_str = self.d_str_bias = self.d_aero = self.d_prop = self.d_shared = d_large
+        self.d_str = d_large[0]
+        self.d_str_bias = d_large[0]
+        self.d_aero = d_large[1]
+        self.d_prop = d_large[2]
+        self.d_shared = d_large[3]
+
 
     def submatrix_structural(self):
         """Define the structural part of the component dependency matrix"""
@@ -37,6 +42,7 @@ class LargeRandomMatrix:
 
         # :define the structural submatrix
         aa = np.zeros(len(x) * len(y))
+        print(self.d_str)
         percent = int(self.d_str * len(aa))
         aa[0:percent] = 1
         np.random.shuffle(aa)

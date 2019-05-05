@@ -36,7 +36,7 @@ p16
 (dp17
 S'data'
 p18
-cnumpy.core._multiarray_umath
+cnumpy.core.multiarray
 _reconstruct
 p19
 (cnumpy
@@ -49,7 +49,7 @@ p22
 tp23
 Rp24
 (I1
-(I0
+(L0L
 tp25
 cnumpy
 dtype
@@ -86,7 +86,7 @@ g22
 tp39
 Rp40
 (I1
-(I0
+(L0L
 tp41
 g29
 I00

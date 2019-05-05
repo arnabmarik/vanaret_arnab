@@ -11,9 +11,6 @@ from ssbjkadmos.utils.math import polynomial_function
 import random
 import pickle
 
-# Initialize bounds for component outputs
-bounds_dict = pickle.load(open("bounds_dict.p", "rb"))
-
 
 class StructureInterpolation:
 
@@ -28,6 +25,8 @@ class StructureInterpolation:
         self.nz = 6.0
         self.wfo = 2000.0
         self.wo = 25000.0
+        with open("bounds_dict.p", "rb") as f:
+            self.bounds_dict = pickle.load(f)
 
     @staticmethod
     def y12(x_str, z, load, w_e, n_z, w_fo, w_o, component):
@@ -70,8 +69,8 @@ class StructureInterpolation:
 
         # calculation of interpolated values for each component
         if component == 0:
-            min_y_12 = bounds_dict['y12_min'][0]
-            max_y_12 = bounds_dict['y12_max'][0]
+            min_y_12 = self.bounds_dict['y12_min'][0]
+            max_y_12 = self.bounds_dict['y12_max'][0]
 
             y_12 = []
             for t in diagonal:
@@ -93,8 +92,8 @@ class StructureInterpolation:
             return y_12
 
         if component == 1:
-            min_y_12 = bounds_dict['y12_min'][1]
-            max_y_12 = bounds_dict['y12_max'][1]
+            min_y_12 = self.bounds_dict['y12_min'][1]
+            max_y_12 = self.bounds_dict['y12_max'][1]
 
             y_12 = []
             for t in diagonal:
@@ -154,8 +153,8 @@ class StructureInterpolation:
 
         # calculation of interpolated values for each component
         if component == 0:
-            min_y_14 = bounds_dict['y14_min'][0]
-            max_y_14 = bounds_dict['y14_max'][0]
+            min_y_14 = self.bounds_dict['y14_min'][0]
+            max_y_14 = self.bounds_dict['y14_max'][0]
 
             y_14 = []
             for t in diagonal:
@@ -177,8 +176,8 @@ class StructureInterpolation:
             return y_14
 
         if component == 1:
-            min_y_14 = bounds_dict['y14_min'][1]
-            max_y_14 = bounds_dict['y14_max'][1]
+            min_y_14 = self.bounds_dict['y14_min'][1]
+            max_y_14 = self.bounds_dict['y14_max'][1]
 
             y_14 = []
             for t in diagonal:
@@ -218,8 +217,8 @@ class StructureInterpolation:
 
         # calculation of interpolated values for each component
         if component == 0:
-            min_y_11 = bounds_dict['y11_min'][0]
-            max_y_11 = bounds_dict['y11_max'][0]
+            min_y_11 = self.bounds_dict['y11_min'][0]
+            max_y_11 = self.bounds_dict['y11_max'][0]
 
             y_11 = []
             for t in diagonal:
@@ -282,8 +281,8 @@ class StructureInterpolation:
 
         # calculation of interpolated values for each component
         if component == 0:
-            min_y_1 = bounds_dict['y1_min'][0]
-            max_y_1 = bounds_dict['y1_max'][0]
+            min_y_1 = self.bounds_dict['y1_min'][0]
+            max_y_1 = self.bounds_dict['y1_max'][0]
 
             y_1 = []
             for t in diagonal:
@@ -305,8 +304,8 @@ class StructureInterpolation:
             return y_1
 
         if component == 1:
-            min_y_1 = bounds_dict['y1_min'][1]
-            max_y_1 = bounds_dict['y1_max'][1]
+            min_y_1 = self.bounds_dict['y1_min'][1]
+            max_y_1 = self.bounds_dict['y1_max'][1]
 
             y_1 = []
             for t in diagonal:
@@ -328,8 +327,8 @@ class StructureInterpolation:
             return y_1
 
         if component == 2:
-            min_y_1 = bounds_dict['y1_min'][2]
-            max_y_1 = bounds_dict['y1_max'][2]
+            min_y_1 = self.bounds_dict['y1_min'][2]
+            max_y_1 = self.bounds_dict['y1_max'][2]
 
             y_1 = []
             for t in diagonal:
@@ -414,8 +413,8 @@ class StructureInterpolation:
         load = self.load
 
         if component == 0:
-            min_g_1_1 = bounds_dict['g1_min'][0]
-            max_g_1_1 = bounds_dict['g1_max'][0]
+            min_g_1_1 = self.bounds_dict['g1_min'][0]
+            max_g_1_1 = self.bounds_dict['g1_max'][0]
 
             g_1 = []
             for t in diagonal:
@@ -436,8 +435,8 @@ class StructureInterpolation:
             return g_1
 
         if component == 1:
-            min_g_1_2 = bounds_dict['g1_min'][1]
-            max_g_1_2 = bounds_dict['g1_max'][1]
+            min_g_1_2 = self.bounds_dict['g1_min'][1]
+            max_g_1_2 = self.bounds_dict['g1_max'][1]
 
             g_1 = []
             for t in diagonal:
@@ -458,8 +457,8 @@ class StructureInterpolation:
             return g_1
 
         if component == 2:
-            min_g_1_3 = bounds_dict['g1_min'][2]
-            max_g_1_3 = bounds_dict['g1_max'][2]
+            min_g_1_3 = self.bounds_dict['g1_min'][2]
+            max_g_1_3 = self.bounds_dict['g1_max'][2]
 
             g_1 = []
             for t in diagonal:
@@ -480,8 +479,8 @@ class StructureInterpolation:
             return g_1
 
         if component == 3:
-            min_g_1_4 = bounds_dict['g1_min'][3]
-            max_g_1_4 = bounds_dict['g1_max'][3]
+            min_g_1_4 = self.bounds_dict['g1_min'][3]
+            max_g_1_4 = self.bounds_dict['g1_max'][3]
 
             g_1 = []
             for t in diagonal:
@@ -502,8 +501,8 @@ class StructureInterpolation:
             return g_1
 
         if component == 4:
-            min_g_1_5 = bounds_dict['g1_min'][4]
-            max_g_1_5 = bounds_dict['g1_max'][4]
+            min_g_1_5 = self.bounds_dict['g1_min'][4]
+            max_g_1_5 = self.bounds_dict['g1_max'][4]
 
             g_1 = []
             for t in diagonal:
@@ -524,8 +523,8 @@ class StructureInterpolation:
             return g_1
 
         if component == 5:
-            min_g_1_6 = bounds_dict['g1_min'][5]
-            max_g_1_6 = bounds_dict['g1_max'][5]
+            min_g_1_6 = self.bounds_dict['g1_min'][5]
+            max_g_1_6 = self.bounds_dict['g1_max'][5]
 
             g_1 = []
             for t in diagonal:
@@ -546,8 +545,8 @@ class StructureInterpolation:
             return g_1
 
         if component == 6:
-            min_g_1_7 = bounds_dict['g1_min'][6]
-            max_g_1_7 = bounds_dict['g1_max'][6]
+            min_g_1_7 = self.bounds_dict['g1_min'][6]
+            max_g_1_7 = self.bounds_dict['g1_max'][6]
 
             g_1 = []
             for t in diagonal:
@@ -579,6 +578,8 @@ class AerodynamicsInterpolation:
         self.esf = np.array([0.5, 1.5]) * self.scale
         self.theta = np.array([0.96, 1.04])
         self.cdmin = 0.01375
+        with open("bounds_dict.p", "rb") as f:
+            self.bounds_dict = pickle.load(f)
 
     @staticmethod
     def y21(w_t, component):
@@ -593,8 +594,8 @@ class AerodynamicsInterpolation:
 
         if component == 0:
 
-            min_y_21 = bounds_dict['y21_min'][0]
-            max_y_21 = bounds_dict['y21_max'][0]
+            min_y_21 = self.bounds_dict['y21_min'][0]
+            max_y_21 = self.bounds_dict['y21_max'][0]
 
             y_21 = []
             for t in diagonal:
@@ -642,8 +643,8 @@ class AerodynamicsInterpolation:
         cdmin = self.cdmin
 
         if component == 0:
-            min_y_23 = bounds_dict['y23_min'][0]
-            max_y_23 = bounds_dict['y23_max'][0]
+            min_y_23 = self.bounds_dict['y23_min'][0]
+            max_y_23 = self.bounds_dict['y23_max'][0]
 
             y_23 = []
             for t in diagonal:
@@ -701,8 +702,8 @@ class AerodynamicsInterpolation:
 
         if component == 0:
 
-            min_y_24 = bounds_dict['y24_min'][0]
-            max_y_24 = bounds_dict['y24_max'][0]
+            min_y_24 = self.bounds_dict['y24_min'][0]
+            max_y_24 = self.bounds_dict['y24_max'][0]
 
             y_24 = []
             for t in diagonal:
@@ -959,6 +960,8 @@ class PropulsionInterpolation:
         self.x_pro = np.array([0.37, .6])
         self.d = np.array([1000., 15000.])
         self.wbe = 4360
+        with open("bounds_dict.p", "rb") as f:
+            self.bounds_dict = pickle.load(f)
 
     @staticmethod
     def y3(x_pro, z, drag, component):
@@ -980,8 +983,8 @@ class PropulsionInterpolation:
         d = self.d
 
         if component == 0:
-            min_y_3 = bounds_dict['y3_min'][0]
-            max_y_3 = bounds_dict['y3_max'][0]
+            min_y_3 = self.bounds_dict['y3_min'][0]
+            max_y_3 = self.bounds_dict['y3_max'][0]
 
             y_3 = []
             for t in diagonal:
@@ -1001,8 +1004,8 @@ class PropulsionInterpolation:
             return y_3
 
         if component == 1:
-            min_y_3 = bounds_dict['y3_min'][1]
-            max_y_3 = bounds_dict['y3_max'][1]
+            min_y_3 = self.bounds_dict['y3_min'][1]
+            max_y_3 = self.bounds_dict['y3_max'][1]
 
             y_3 = []
             for t in diagonal:
@@ -1022,8 +1025,8 @@ class PropulsionInterpolation:
             return y_3
 
         if component == 2:
-            min_y_3 = bounds_dict['y3_min'][2]
-            max_y_3 = bounds_dict['y3_max'][2]
+            min_y_3 = self.bounds_dict['y3_min'][2]
+            max_y_3 = self.bounds_dict['y3_max'][2]
 
             y_3 = []
             for t in diagonal:
@@ -1059,8 +1062,8 @@ class PropulsionInterpolation:
         wbe = self.wbe
 
         if component == 0:
-            min_y_31 = bounds_dict['y31_min'][0]
-            max_y_31 = bounds_dict['y31_max'][0]
+            min_y_31 = self.bounds_dict['y31_min'][0]
+            max_y_31 = self.bounds_dict['y31_max'][0]
 
             y_31 = []
             for t in diagonal:
@@ -1088,8 +1091,8 @@ class PropulsionInterpolation:
         d = self.d
 
         if component == 0:
-            min_y_32 = bounds_dict['y32_min'][0]
-            max_y_32 = bounds_dict['y32_max'][0]
+            min_y_32 = self.bounds_dict['y32_min'][0]
+            max_y_32 = self.bounds_dict['y32_max'][0]
 
             y_32 = []
             for t in diagonal:
@@ -1119,8 +1122,8 @@ class PropulsionInterpolation:
         z = self.z
 
         if component == 0:
-            min_y_34 = bounds_dict['y34_min'][0]
-            max_y_34 = bounds_dict['y34_max'][0]
+            min_y_34 = self.bounds_dict['y34_min'][0]
+            max_y_34 = self.bounds_dict['y34_max'][0]
 
             y_34 = []
             for t in diagonal:
@@ -1173,8 +1176,8 @@ class PropulsionInterpolation:
 
         if component == 0:
 
-            min_g_3 = bounds_dict['g3_min'][0]
-            max_g_3 = bounds_dict['g3_max'][0]
+            min_g_3 = self.bounds_dict['g3_min'][0]
+            max_g_3 = self.bounds_dict['g3_max'][0]
 
             g_3 = []
             for t in diagonal:
@@ -1196,8 +1199,8 @@ class PropulsionInterpolation:
 
         if component == 1:
 
-            min_g_3 = bounds_dict['g3_min'][1]
-            max_g_3 = bounds_dict['g3_max'][1]
+            min_g_3 = self.bounds_dict['g3_min'][1]
+            max_g_3 = self.bounds_dict['g3_max'][1]
 
             g_3 = []
             for t in diagonal:
@@ -1219,8 +1222,8 @@ class PropulsionInterpolation:
 
         if component == 2:
 
-            min_g_3 = bounds_dict['g3_min'][2]
-            max_g_3 = bounds_dict['g3_max'][2]
+            min_g_3 = self.bounds_dict['g3_min'][2]
+            max_g_3 = self.bounds_dict['g3_max'][2]
 
             g_3 = []
             for t in diagonal:
@@ -1241,8 +1244,8 @@ class PropulsionInterpolation:
 
         if component == 3:
 
-            min_g_3 = bounds_dict['g3_min'][3]
-            max_g_3 = bounds_dict['g3_max'][3]
+            min_g_3 = self.bounds_dict['g3_min'][3]
+            max_g_3 = self.bounds_dict['g3_max'][3]
 
             g_3 = []
             for t in diagonal:
@@ -1285,6 +1288,8 @@ class PerformanceInterpolation:
         self.x_pro = np.array([0.37, .6])
         self.d = np.array([1000., 15000.])
         self.wbe = 4360
+        with open("bounds_dict.p", "rb") as f:
+            self.bounds_dict = pickle.load(f)
 
     @staticmethod
     def range(z, wt, wf, fin, sfc):
@@ -1303,8 +1308,8 @@ class PerformanceInterpolation:
         fin = np.array([2., 12.])
         sfc = np.array([.5, 1.5])
 
-        min_ran = bounds_dict['ran_min']
-        max_ran = bounds_dict['ran_max']
+        min_ran = self.bounds_dict['ran_min']
+        max_ran = self.bounds_dict['ran_max']
 
         ran = []
         for t in diagonal:

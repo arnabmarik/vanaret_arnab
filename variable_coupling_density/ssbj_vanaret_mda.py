@@ -1,24 +1,25 @@
 
 # Imports
-from openmdao.api import Group
+from openmdao.api import Group, ParallelGroup
 import numpy as np
 from openmdao.api import IndepVarComp, ExecComp
-from examples.scripts.ssbj_vanaret_discipline import StructureDisc
-from examples.scripts.ssbj_vanaret_discipline import AerodynamicsDisc
-from examples.scripts.ssbj_vanaret_discipline import PropulsionDisc
-from examples.scripts.ssbj_vanaret_discipline import PerformanceDisc
-from openmdao.api import NonlinearBlockGS, ScipyKrylov
+from openmdao.solvers.linear.linear_block_gs import LinearBlockGS
+
+from ssbj_vanaret_discipline import StructureDisc
+from ssbj_vanaret_discipline import AerodynamicsDisc
+from ssbj_vanaret_discipline import PropulsionDisc
+from ssbj_vanaret_discipline import PerformanceDisc
+from openmdao.api import NonlinearBlockGS, ScipyKrylov, NonlinearBlockJac
 
 
-class SsbjInitMda(Group):
+class SsbjMda(Group):
     """
-    SSBJ Analysis with aerodynamics, performance, propulsion and structure disciplines.
+    SSBJ Analysis with aerodynamics, common, propulsion and structure disciplines.
     """
-    def __init__(self, nx_input, ny_input):
-        super(SsbjInitMda, self).__init__()
+    def __init__(self, nx_input):
+        super(SsbjMda, self).__init__()
         # self.scalers = scalers
         self.nx = nx_input
-        self.ny = ny_input
 
     def setup(self):
         # Design variables
@@ -26,13 +27,8 @@ class SsbjInitMda(Group):
         self.add_subsystem('x1_ini', IndepVarComp('x1', .5 * np.ones(self.nx)), promotes=['*'])
         self.add_subsystem('x2_ini', IndepVarComp('x2', .5 * np.ones(self.nx)), promotes=['*'])
         self.add_subsystem('x3_ini', IndepVarComp('x3', .5 * np.ones(self.nx)), promotes=['*'])
-        # self.add_subsystem('y12_ini', IndepVarComp('y12', .5 * np.ones(self.ny)), promotes=['*'])
-        # self.add_subsystem('y31_ini', IndepVarComp('y13', .5 * np.ones(self.ny)), promotes=['*'])
-        # self.add_subsystem('y21_ini', IndepVarComp('y21', .5 * np.ones(self.ny)), promotes=['*'])
-        # self.add_subsystem('y23_ini', IndepVarComp('y23', .5 * np.ones(self.ny)), promotes=['*'])
-        # self.add_subsystem('y32_ini', IndepVarComp('y32', .5 * np.ones(self.ny)), promotes=['*'])
 
-        # Disciplines
+        # Discipline
         sap_group = Group()
         sap_group.add_subsystem('Structure', StructureDisc(), promotes=['*'])
         sap_group.add_subsystem('Aerodynamics', AerodynamicsDisc(), promotes=['*'])
@@ -40,9 +36,10 @@ class SsbjInitMda(Group):
 
         sap_group.nonlinear_solver = NonlinearBlockGS()
         # sap_group.nonlinear_solver.options['atol'] = 1.0e-3
-        sap_group.nonlinear_solver.options['maxiter'] = 0
+        sap_group.nonlinear_solver.options['maxiter'] = 100
         sap_group.linear_solver = ScipyKrylov()
         self.add_subsystem('Mda', sap_group, promotes=['*'])
+
         self.add_subsystem('Performance', PerformanceDisc(), promotes=['*'])
 
         # Constraints
