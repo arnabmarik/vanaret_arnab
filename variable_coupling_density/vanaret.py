@@ -9,7 +9,6 @@ as shown in the paper: Charlie Vanaret, Francois Gallard, and Joaquim Martins.
 import matplotlib.pyplot as plt
 import numpy as np
 from scipy.linalg import block_diag as bd
-import pickle
 
 # :np.set_printoptions(threshold=np.inf)
 
@@ -26,7 +25,6 @@ class LargeRandomMatrix:
         self.d_prop = d_large[2]
         self.d_shared = d_large[3]
 
-
     def submatrix_structural(self):
         """Define the structural part of the component dependency matrix"""
 
@@ -42,17 +40,10 @@ class LargeRandomMatrix:
 
         # :define the structural submatrix
         aa = np.zeros(len(x) * len(y))
-        print(self.d_str)
         percent = int(self.d_str * len(aa))
         aa[0:percent] = 1
         np.random.shuffle(aa)
         aa = aa.reshape(len(y), len(x))
-
-        # fig = plt.figure()
-        # ax = fig.add_subplot(111)
-        # ax.matshow(aa, cmap='Purples')
-        # plt.show()
-
         return aa
 
     def submatrix_structural_biased(self):
@@ -77,13 +68,6 @@ class LargeRandomMatrix:
         for j2 in range(4 * self.ny_str_bias + self.nx_str_bias):
             for i6 in range(self.nx_str_bias + 2 * self.ny_str_bias - 5, self.nx_str_bias + 2 * self.ny_str_bias):
                 aa[j2][i6] = np.random.choice([1, 0], p=[self.d_str_bias, 1 - self.d_str_bias])
-
-        # int(4/5 * (self.nx_str_bias + 2 * self.ny_str_bias))
-        # fig = plt.figure()
-        # ax = fig.add_subplot(111)
-        # ax.matshow(aa, cmap='Purples')
-        # plt.show()
-
         return aa
 
     def submatrix_aerodynamics(self):

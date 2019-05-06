@@ -16,25 +16,28 @@ from ssbj_vanaret_mdf import mdf_run
 from vanaret import ScaledDependencyMatrix, LargeRandomMatrix
 
 
-for i in [.3, .4, .5, .6, .7]:
-    for j in [.3, .4, .5, .6, .7]:
-        for k in [.3, .4, .5, .6, .7]:
-            for l in [.3, .4, .5, .6, .7]:
-                for d_large in [(i, j, k, l)]:
+for d_str in [.3, .7]:
+    for d_aer in [.3, .7]:
+        for d_pro in [.3, .7]:
+            for d_shared in [.3, .7]:
+                for d_large in [(d_str, d_aer, d_pro, d_shared)]:
                     nx_large = 100
                     ny_large = 2
 
                     with open("large_matrix_params.p", "wb") as f:
                         pickle.dump([nx_large, ny_large, d_large], f)
+                    print(d_large)
                     v1 = LargeRandomMatrix(nx_large, ny_large, d_large)
 
                     # pickle the submatrices of the larger matrix
-                    a = ["submatrix_structural", "submatrix_structural_biased", "submatrix_aerodynamics",
+                    a = ["submatrix_structural",
+                         "submatrix_structural_biased",
+                         "submatrix_aerodynamics",
                          "submatrix_propulsion",
                          "submatrix_shared_variables"]
-                    for i in a:
-                        with open(i + ".p", "wb") as f:
-                            pickle.dump(getattr(v1, i)(), f)
+                    for r in a:
+                        with open(r + ".p", "wb") as f:
+                            pickle.dump(getattr(v1, r)(), f)
 
                     # make an empty pandas dataframe to form database
                     a = ["df_mdf.p", "df_idf.p", "df_idf_tol.p"]
@@ -44,8 +47,8 @@ for i in [.3, .4, .5, .6, .7]:
                                 pickle.dump(pd.DataFrame(columns=[]), f)
 
                     for nx in [4]:
-                        for ny in [4]:
-                            for _ in range(2):
+                        for ny in [4, 5, 6, 7]:
+                            for _ in range(3):
                                 # nx = 5  # dimension of discipline inputs
                                 # ny = j  # dimension of coupling
                                 user_input_array = [nx, ny, d_large]
@@ -121,21 +124,23 @@ for i in [.3, .4, .5, .6, .7]:
                                 if 'IDF' in mdao_definitions:
                                     idf_run2(nx, ny)
 
-                                # if 'MDF' in mdao_definitions:
-                                #    mdf_run(nx, ny, d_large)
+                                if 'MDF' in mdao_definitions:
+                                    mdf_run(nx, ny, d_large)
 
-                                df_mdf = pickle.load(open("df_mdf.p", "rb"))
-                                df_idf = pickle.load(open("df_idf.p", "rb"))
-                                df_idf_tol = pickle.load(open("df_idf_tol.p", "rb"))
+                                with open("df_mdf.p", "rb") as f:
+                                    df_mdf = pickle.load(f)
 
-                                if not os.path.exists('./result(pp)/result(nx = ' + str(nx) + ')'):
-                                    os.makedirs('./result(pp)/result(nx = ' + str(nx) + ')')
+                                with open("df_idf_tol.p", "rb") as f:
+                                    df_idf_tol = pickle.load(f)
+
+                                if not os.path.exists('./result/result(nx = ' + str(nx) + ')'):
+                                    os.makedirs('./result/result(nx = ' + str(nx) + ')')
 
                                 result = pd.concat([df_mdf, df_idf_tol], axis=1)
-                                result.to_csv('result(pp)/result(nx = ' + str(nx) + ')/result_new_values' + '('
+                                result.to_csv('result/result(nx = ' + str(nx) + ')/result_new_values' + '('
                                               + str(d_large) + ').csv')
-
-                                # result.to_csv('result_makeup_values.csv')
-                                # os.remove("str_count.p")
-
+                                # test = os.listdir(os.getcwd())
+                                # for item in test:
+                                #     if item.endswith(".p"):
+                                #         os.remove(os.path.join(os.getcwd(), item))
 
