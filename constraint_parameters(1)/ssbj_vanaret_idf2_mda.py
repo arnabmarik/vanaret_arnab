@@ -1,10 +1,12 @@
 from openmdao.api import Group
 import numpy as np
-from openmdao.api import IndepVarComp, ExecComp
+from openmdao.api import IndepVarComp, ExecComp, ParallelGroup
 from ssbj_vanaret_discipline import StructureDisc
 from ssbj_vanaret_discipline import AerodynamicsDisc
 from ssbj_vanaret_discipline import PropulsionDisc
 from ssbj_vanaret_discipline import PerformanceDisc
+from numba import jit
+# import torch as np
 
 
 class SsbjIdf2Mda(Group):
@@ -23,6 +25,7 @@ class SsbjIdf2Mda(Group):
         self.y31 = y31_initial
         self.y21 = y21_initial
 
+    @jit(nopython = False)
     def setup(self):
         # Design variables
         self.add_subsystem('z_ini', IndepVarComp('z',   .5 * np.ones(self.nx)), promotes=['*'])

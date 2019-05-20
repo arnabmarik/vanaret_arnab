@@ -6,7 +6,7 @@ import numpy as np
 from numpy.linalg import norm
 import pandas as pd
 import matplotlib.pylab as plt
-from openmdao.api import Problem, ScipyOptimizeDriver, SqliteRecorder, CaseReader
+from openmdao.api import Problem, ScipyOptimizeDriver, SqliteRecorder, CaseReader, ParallelGroup, PETScVector
 from ssbj_vanaret_mda import SsbjMda
 import time
 
@@ -14,10 +14,10 @@ import time
 def mdf_run(nx, ny, d):
 
     # make a counter for discipline calls
-    [str_count, aer_count, pro_count] = np.zeros(3)
-    pickle.dump(str_count, open("str_count.p", "wb"))
-    pickle.dump(aer_count, open("aer_count.p", "wb"))
-    pickle.dump(pro_count, open("pro_count.p", "wb"))
+    a = ["str_count.p", "aer_count.p", "pro_count.p", "obj_count.p"]
+    for i in a:
+        with open(i, "wb") as f:
+            pickle.dump(0, f)
 
     prob = Problem()  # initialize the optimization problem
     prob.model = SsbjMda(nx_input=nx)  # create the MDA
@@ -44,7 +44,7 @@ def mdf_run(nx, ny, d):
     prob.driver.options['tol'] = 1e-3
 
     start_time = time.time()
-    prob.setup(mode='fwd')
+    prob.setup(vector_class=PETScVector, check=False, mode='fwd')
     prob.set_solver_print(1)
     prob.run_driver()
     end_time = time.time()
@@ -58,6 +58,8 @@ def mdf_run(nx, ny, d):
     str_count = pickle.load(open("str_count.p", "rb"))
     aer_count = pickle.load(open("aer_count.p", "rb"))
     pro_count = pickle.load(open("pro_count.p", "rb"))
+    obj_count = pickle.load(open("obj_count.p", "rb"))
+
 
     [z.append(case.get_objectives(case)[obj_list[0]]) for case in case_ids]
     df_mdf = pickle.load(open("df_mdf.p", "rb")).append(pd.DataFrame({'1.nx': [nx],
@@ -68,7 +70,8 @@ def mdf_run(nx, ny, d):
                                                                       '6.final_objective[MDF]': z[-1],
                                                                       '7.str_count[MDF]': str_count,
                                                                       '8.aer_count[MDF]': aer_count,
-                                                                      '9.pro_count[MDF]': pro_count}))
+                                                                      '8.5.pro_count[MDF]': pro_count,
+                                                                      '9.obj_count[MDF]': obj_count}))
     pickle.dump(df_mdf, open("df_mdf.p", "wb"))
     print('z_opt=', prob['z'])
     print('x1_opt=', prob['x1'])

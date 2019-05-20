@@ -9,7 +9,6 @@ as shown in the paper: Charlie Vanaret, Francois Gallard, and Joaquim Martins.
 import matplotlib.pyplot as plt
 import numpy as np
 from scipy.linalg import block_diag as bd
-import pickle
 
 # :np.set_printoptions(threshold=np.inf)
 
@@ -20,7 +19,11 @@ class LargeRandomMatrix:
     def __init__(self, nx_large, ny_large, d_large):
         self.nx_str = self.nx_str_bias = self.nx_aero = self.nx_prop = self.nx_shared = nx_large
         self.ny_str = self.ny_str_bias = self.ny_aero = self.ny_prop = self.ny_shared = ny_large
-        self.d_str = self.d_str_bias = self.d_aero = self.d_prop = self.d_shared = d_large
+        self.d_str = d_large
+        self.d_str_bias = d_large
+        self.d_aero = d_large
+        self.d_prop = d_large
+        self.d_shared = d_large
 
     def submatrix_structural(self):
         """Define the structural part of the component dependency matrix"""
@@ -41,12 +44,6 @@ class LargeRandomMatrix:
         aa[0:percent] = 1
         np.random.shuffle(aa)
         aa = aa.reshape(len(y), len(x))
-
-        # fig = plt.figure()
-        # ax = fig.add_subplot(111)
-        # ax.matshow(aa, cmap='Purples')
-        # plt.show()
-
         return aa
 
     def submatrix_structural_biased(self):
@@ -71,13 +68,6 @@ class LargeRandomMatrix:
         for j2 in range(4 * self.ny_str_bias + self.nx_str_bias):
             for i6 in range(self.nx_str_bias + 2 * self.ny_str_bias - 5, self.nx_str_bias + 2 * self.ny_str_bias):
                 aa[j2][i6] = np.random.choice([1, 0], p=[self.d_str_bias, 1 - self.d_str_bias])
-
-        # int(4/5 * (self.nx_str_bias + 2 * self.ny_str_bias))
-        # fig = plt.figure()
-        # ax = fig.add_subplot(111)
-        # ax.matshow(aa, cmap='Purples')
-        # plt.show()
-
         return aa
 
     def submatrix_aerodynamics(self):
@@ -557,3 +547,4 @@ class ScaledDependencyMatrix:
 
 # a = ScaledDependencyMatrix(1, 1, 1, 1, 1, 1, 1)
 # print(a.build_component_dependency(5, 8))
+

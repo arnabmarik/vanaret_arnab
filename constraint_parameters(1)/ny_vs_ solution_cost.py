@@ -1,13 +1,13 @@
 import pandas as pd
 import matplotlib.pylab as plt
 
-# result = pd.read_csv("result.csv")
+# result(variable_coupling_density) = pd.read_csv("result(variable_coupling_density).csv")
 #
 # fig1 = plt.figure(1)
 # ax = fig1.add_subplot(211)
-# ax.plot(result['ny'], result['total time[MDF]'], label='MDF')
-# ax.plot(result['ny'], result['total time[IDF]'], label='IDF_TOL = 1e-6')
-# ax.plot(result['ny'], result['total time[IDF_tol]'], label='IDF_TOL = 1e-3')
+# ax.plot(result(variable_coupling_density)['ny'], result(variable_coupling_density)['total time[MDF]'], label='MDF')
+# ax.plot(result(variable_coupling_density)['ny'], result(variable_coupling_density)['total time[IDF]'], label='IDF_TOL = 1e-6')
+# ax.plot(result(variable_coupling_density)['ny'], result(variable_coupling_density)['total time[IDF_tol]'], label='IDF_TOL = 1e-3')
 # plt.gca().legend(('MDF', 'IDF_TOL = 1e-6', 'IDF_TOL = 1e-3'))
 # plt.xlabel('ny', fontsize=12)
 # plt.title('nx = 7(no PreMDA)')

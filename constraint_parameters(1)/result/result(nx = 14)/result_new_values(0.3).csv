@@ -1,0 +1,2 @@
+,1.nx,2.ny,3.d,4.total iterations[MDF],5.total time[MDF],6.final_objective[MDF],7.str_count[MDF],8.aer_count[MDF],9.pro_count[MDF],10.total iterations[IDF_tol],11.total time[IDF_tol],12.final_objective[IDF_tol],13.str_count[IDF_tol],14.aer_count[IDF_tol],15.pro_count[IDF_tol]
+0,14,10,0.3,7,1265.9072489738464,-2.9591389438998306,1430.0,1430.0,1180.0,8,1398.1507451534271,-2.959265072322053,1770,1770,1420
